@@ -6,7 +6,7 @@ trait Expression[R] {
 }
 
 trait Expressions {
-  final protected def expression[R](exps: ExpSYM[R]): Expression[R] = new Expression[R](exps) {
+  final protected def expression[R](exps: ExpSYM[R]): Expression[R] = new Expression[R] {
     import exps._
 
     override def tf1: R = add (lit(8)) (neg(add(lit(1))(lit(2))))
