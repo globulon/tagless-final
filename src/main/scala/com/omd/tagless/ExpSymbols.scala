@@ -17,11 +17,12 @@ trait ExpSymbols {
     override def add: String ⇒ String ⇒ String = a ⇒ b ⇒ s"""(+ $a $b)"""
   }
 
+  //Serializer to tree is just another Expression making use of the language
   implicit final def runTree: ExpSYM[Tree] = new ExpSYM[Tree] {
     override def lit: Int ⇒ Tree = v ⇒ Node("Lit", List(Leaf(v.toString)))
 
-    override def neg: Tree ⇒ Tree = t ⇒ Node("neg", List(t))
+    override def neg: Tree ⇒ Tree = t ⇒ Node("Neg", List(t))
 
-    override def add: Tree ⇒ Tree ⇒ Tree = left ⇒ right ⇒ Node("add", List(left, right))
+    override def add: Tree ⇒ Tree ⇒ Tree = left ⇒ right ⇒ Node("Add", List(left, right))
   }
 }
