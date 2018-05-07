@@ -23,5 +23,4 @@ trait Deserialization {
     } yield implicitly[ExpSYM[R]].add(l)(r)
     case n                          ⇒ Left(s"""Invalid tree $n""")
   }
-
 }

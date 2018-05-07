@@ -3,9 +3,15 @@ package com.omd.tagless
 import org.scalatest.{MustMatchers, WordSpec}
 
 final class DeserializationTest extends WordSpec with MustMatchers with Deserialization with Expressions {
-  "serialization" should {
+  "de-serialization" should {
     "properly reuse dsl" in {
       eval(expression[Tree].tf1) must be (expected)
+    }
+  }
+
+  "deserialization" should {
+    "match expected expression" in {
+      fromTree[Int].apply(expression[Tree].tf1) must be (Right(expression[Int].tf1))
     }
   }
 
