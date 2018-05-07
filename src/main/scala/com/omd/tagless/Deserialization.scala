@@ -1,5 +1,7 @@
 package com.omd.tagless
 
+import scalaz.Scalaz._
+
 import scala.util.{Success, Try}
 /**
   * 2.3
@@ -15,12 +17,13 @@ trait Deserialization {
   }
 
   protected final def fromTree[R: ExpSYM]: Tree ⇒ SafeRead[R] = {
-    case Node("Lit", List(Leaf(v))) ⇒ safeRead(v) map implicitly[ExpSYM[R]].lit
-    case Node("Neg", List(t))       ⇒ fromTree[R].apply(t) map implicitly[ExpSYM[R]].neg
-    case Node("Add", List(left, right))    ⇒ for {
-      l ← fromTree[R].apply(left)
-      r ← fromTree[R].apply(right)
-    } yield implicitly[ExpSYM[R]].add(l)(r)
-    case n                          ⇒ Left(s"""Invalid tree $n""")
+    case Node("Lit", List(Leaf(v)))     ⇒
+      safeRead(v) map implicitly[ExpSYM[R]].lit
+    case Node("Neg", List(t))           ⇒
+      fromTree[R].apply(t) map implicitly[ExpSYM[R]].neg
+    case Node("Add", List(left, right)) ⇒
+      (fromTree[R].apply(left) |@| fromTree[R].apply(right)) { implicitly[ExpSYM[R]].add(_)(_) }
+    case n                          ⇒
+      Left(s"""Invalid tree $n""")
   }
 }
