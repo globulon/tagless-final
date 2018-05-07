@@ -12,6 +12,7 @@ final class DeserializationTest extends WordSpec with MustMatchers with Deserial
   "deserialization" should {
     "match expected expression" in {
       fromTree[Int].apply(expression[Tree].tf1) must be (Right(expression[Int].tf1))
+      println(deserialize[Int])
     }
   }
 
@@ -22,4 +23,11 @@ final class DeserializationTest extends WordSpec with MustMatchers with Deserial
         Node("Add",List(
           Node("Lit",List(Leaf("1"))),
           Node("Lit",List(Leaf("2")))))))))
+
+
+  private def deserialize[R: ExpSYM] =
+    fromTree[R].apply(expression[Tree].tf1) match {
+      case Left(msg) ⇒ msg
+      case Right(x)  ⇒ s"""${eval(x)}"""
+    }
 }
