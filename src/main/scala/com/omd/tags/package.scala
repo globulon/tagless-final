@@ -31,8 +31,3 @@ package object tags extends Environment {
     case (VS(n), _::rest) ⇒ lookup (n, rest)
   }
 }
-
-
-
-
-
