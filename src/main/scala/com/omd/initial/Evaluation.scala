@@ -9,5 +9,9 @@ protected[initial] trait Evaluation {
     case A(f, a)    ⇒ eval(env, f).apply(eval(env, a))
   }
 
-  protected def lookup[Env, T](env: Env, v: Var[Env, T]): T
+
+  private def lookup[Env, T](env: Env, v: Var[Env, T]): T = (env, v) match {
+    case ((t:T, _), VZ())      ⇒ t
+    case ((_, rest), VS(next)) ⇒ lookup(rest, next)
+  }
 }

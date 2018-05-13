@@ -1,6 +1,3 @@
 package com.omd
 
-package object initial {
-
-
-}
+package object initial extends Evaluation with Expressions
